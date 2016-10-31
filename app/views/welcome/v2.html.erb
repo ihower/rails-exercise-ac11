@@ -1,0 +1,75 @@
+<h2>jQuery MVC版</h2>
+
+<div id="content">
+</div>
+
+<script>
+  var todo_app = JST["templates/todo_app"]();
+  $("#content").html(todo_app);
+
+  var App = {
+    todos: [],
+    init: function(){
+      this.todos = <%= @todos.to_json.html_safe %>;
+      this.render();
+      this.bind_add_event();
+      this.bind_remove_event();
+    },
+    bind_add_event: function(){
+      var that = this;
+
+      $("#todo-submit").click(function(){
+        var input = $("#todo-input").val();
+        console.log(input);
+
+        $.ajax({
+          url: "/todos",
+          dataType: "json",
+          method: "POST",
+          data: {
+            todo: {
+              title: input
+            }
+          },
+          success: function(data){ that.add(data) }
+        })
+      });
+    },
+    bind_remove_event: function(){
+      var that = this;
+
+      $("#todo-list").on("click", ".remove", function(){
+        var todo_id = $(this).closest("li").data("id");
+        console.log(todo_id);
+
+        $.ajax({
+          url: "/todos/" + todo_id,
+          dataType: "json",
+          method: "DELETE",
+          success: that.remove.bind(that, todo_id)
+        })
+      });
+    },
+    add: function(data){
+      this.todos.push( data );
+      this.render();
+    },
+    remove: function(todo_id){
+      this.todos = $.grep(this.todos, function(e){
+        return e.id != todo_id
+      });
+      this.render();
+    },
+    render: function(){
+      $("#todo-list").html("");
+      this.todos.forEach(function(x){
+        var html = JST["templates/todo"]( { todo: x } );
+        $("#todo-list").append(html);
+      });
+      $("#todo-input").val("");
+    }
+
+  }
+
+  App.init();
+</script>

@@ -13,4 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require vue.min
+//= require_tree ./templates
 //= require_tree .

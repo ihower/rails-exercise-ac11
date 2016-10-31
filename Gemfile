@@ -9,6 +9,8 @@ gem 'sqlite3'
 
 gem 'mysql2'
 
+gem 'ejs'
+
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets

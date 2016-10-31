@@ -1,0 +1,58 @@
+<h2>Todo SPA v3</h2>
+
+<div id="todo-app">
+  <input type="text" v-model="new_todo_title">
+  <button v-on:click="add">Submit</button>
+
+  <ul>
+    <li v-for="todo in todos">
+        {{ todo.title }}
+        <a v-on:click="remove(todo)">(remove)</a>
+    </li>
+  </ul>
+</div>
+
+<script>
+
+var todo_app = new Vue({
+  el: '#todo-app',
+  methods: {
+    add: function(){
+      console.log("abc")
+      var that = this;
+      $.ajax({
+        url: "/todos",
+        type: "POST",
+        data: {
+          todo: {
+            title: that.new_todo_title
+          }
+        },
+        dataType: "json",
+        success: function(data){
+          that.todos.push(data);
+          that.new_todo_title = "";
+        }
+      })
+    },
+    remove: function(todo){
+      var that = this;
+      $.ajax({
+        url : "/todos/" + todo.id,
+        type: "DELETE",
+        dataType: "json",
+        success: function(data){
+          that.todos = $.grep(that.todos, function(e){
+            return e.id != todo.id
+          });
+        }
+      })
+    }
+  },
+  data: {
+    new_todo_title: '',
+    todos: <%= @todos.to_json.html_safe %>
+  }
+})
+
+</script>

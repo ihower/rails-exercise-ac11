@@ -1,0 +1,62 @@
+<h2>jQuery 無架構版</h2>
+<div id="content"></div>
+
+<input type="text" id="todo-input">
+<button id="todo-submit">Submit</button>
+
+<ul id="todo-list">
+</ul>
+
+<script>
+  var html = JST["templates/hello"]( { foo: "ihower" } );
+  $("#content").html(html);
+</script>
+
+
+<script>
+  var todos = <%= @todos.to_json.html_safe %>;
+
+  todos.forEach(function(todo){
+    console.log(todo);
+    var html = JST["templates/todo"]( { todo: todo } );
+    $("#todo-list").append(html);
+  })
+
+  $("#todo-list").on("click", ".remove", function(){
+     var li = $(this).closest("li");
+     var todo_id = li.data("id");
+     console.log(todo_id);
+     $.ajax({
+       url: "/todos/" + todo_id,
+       dataType: "json",
+       method: "DELETE",
+       success: function(){
+         li.remove();
+       }
+     })
+  })
+
+  // bind submit event
+  $("#todo-submit").click(function(){
+    var input = $("#todo-input").val();
+    console.log(input);
+    $.ajax({
+      url: "/todos",
+      dataType: "json",
+      method: "POST",
+      data: {
+        todo: {
+          title: input
+        }
+      },
+      success: function(data){
+        console.log(data);
+        var html = JST["templates/todo"]( { todo: data } );
+
+        $("#todo-list").append(html);
+        $("#todo-input").val("");
+        console.log("OK: "+ data["id"] );
+      }
+    })
+  })
+</script>
