@@ -2,7 +2,12 @@
 
 <%= form_for Message.new, :remote => true do |f| %>
   <%= f.text_field :content %>
-  <%= f.submit "送出" %>
+  <%= f.submit "Ajax 送出" %>
+<% end %>
+
+<%= form_for Message.new do |f| %>
+  <%= f.text_field :content, :id => "ws-content" %>
+  <%= f.submit "WS 送出", :id => "ws-submit" %>
 <% end %>
 
 <ul id="message-list">
@@ -10,3 +15,12 @@
     <li><%= m.content %> at <%= m.created_at.to_s %></li>
   <% end %>
 </ul>
+
+<script>
+  $("#ws-submit").click(function(e){
+    e.preventDefault();
+    var content = $("#ws-content").val();
+    App.messages.speak( content );
+    $("#ws-content").val("");
+  })
+</script>
