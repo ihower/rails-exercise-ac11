@@ -16,9 +16,21 @@
 
 var todo_app = new Vue({
   el: '#todo-app',
+  mounted: function(){
+    var that = this;
+    App.todos = App.cable.subscriptions.create("TodosChannel", {
+      connected: function() {
+        console.log("connected todos");
+      },
+      disconnected: function() {},
+      received: function(todos) {
+        that.todos = todos;
+      }
+    });
+
+  },  
   methods: {
     add: function(){
-      console.log("abc")
       var that = this;
       $.ajax({
         url: "/todos",
