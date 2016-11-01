@@ -12,6 +12,5 @@ App.messages = App.cable.subscriptions.create("MessagesChannel", {
     console.log("收到資料: ");
     console.log(data);
     $("#message-list").prepend( data["html"] );
-    $("#message_content").val("");
   }
 });
