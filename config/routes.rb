@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  resources :messages
+  mount ActionCable.server => "/cable"
+
   get "/todos/v1" => "welcome#v1"
   get "/todos/v2" => "welcome#v2"
   get "/todos/v3" => "welcome#v3"
@@ -9,6 +12,6 @@ Rails.application.routes.draw do
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  root "people#index"
+  root "welcome#chat"
 
 end

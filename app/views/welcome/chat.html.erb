@@ -1,0 +1,12 @@
+<h2>即時聊天</h2>
+
+<%= form_for Message.new, :remote => true do |f| %>
+  <%= f.text_field :content %>
+  <%= f.submit "送出" %>
+<% end %>
+
+<ul id="message-list">
+  <% Message.all.order("id DESC").each do |m| %>
+    <li><%= m.content %> at <%= m.created_at.to_s %></li>
+  <% end %>
+</ul>
