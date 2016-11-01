@@ -12,7 +12,9 @@
 
 <ul id="message-list">
   <% Message.all.order("id DESC").each do |m| %>
-    <li><%= m.content %> at <%= m.created_at.to_s %></li>
+
+    <%= render :partial => "messages/message", :locals => { :message => m } %>
+    
   <% end %>
 </ul>
 

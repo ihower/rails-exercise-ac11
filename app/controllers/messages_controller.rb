@@ -31,7 +31,9 @@ class MessagesController < ApplicationController
         format.html { redirect_to @message, notice: 'Message was successfully created.' }
         format.json { render :show, status: :created, location: @message }
         format.js {
-          ActionCable.server.broadcast("public_room", { :message => @message } )
+          html = ApplicationController.renderer.render( :partial => "messages/message", :locals => { :message => @message } )
+
+          ActionCable.server.broadcast("public_room", { :html => html } )
           render :nothing => true
         }
       else

@@ -8,7 +8,8 @@ class MessagesChannel < ApplicationCable::Channel
   def speak(data)
     @message = Message.new( :content => data["content"] )
     if @message.save
-      ActionCable.server.broadcast("public_room", { :message => @message } )
+      html = ApplicationController.renderer.render( :partial => "messages/message", :locals => { :message => @message } )
+      ActionCable.server.broadcast("public_room", { :html => html } )
     else
       # ???
     end
