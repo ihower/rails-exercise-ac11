@@ -15,5 +15,8 @@
 //= require turbolinks
 //= require cable
 //= require vue.min
+//= require react
+//= require react_ujs
+//= require components
 //= require_tree ./templates
 //= require_tree .

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get "/todos/v2" => "welcome#v2"
   get "/todos/v3" => "welcome#v3"
 
+  get "/todos/v4" => "welcome#v4"
+
   resources :todos
   resources :people
 
